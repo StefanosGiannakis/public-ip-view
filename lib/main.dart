@@ -55,11 +55,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Public IP Viewer',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+      theme: ThemeData.dark().copyWith(
         useMaterial3: true,
+        colorScheme: ColorScheme.dark(
+          primary: Colors.blueGrey,
+          secondary: Colors.tealAccent,
+        ),
       ),
       home: const MyHomePage(title: 'Public IP Viewer'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -82,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     _loadInitialData();
 
-    Timer.periodic(const Duration(minutes: 30), (timer) async {
+    Timer.periodic(const Duration(minutes: 5), (timer) async {
       await _updateIpAddress();
     });
   }
@@ -120,7 +124,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text(widget.title,
+          style: TextStyle(fontSize: 18, color: Colors.white70),
+        ),
       ),
       body: Center(
         child: Column(
@@ -128,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             const Text(
               'Your current public IP address:',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18, color: Colors.white70),
             ),
             const SizedBox(height: 20),
             _isLoading
@@ -140,11 +146,13 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(height: 40),
             ElevatedButton(
               onPressed: _isLoading ? null : _updateIpAddress,
-              child: const Text('Update Widget'),
+              child: const Text('Refresh Widget',
+                style: TextStyle(fontSize: 18, color: Colors.green),
+              ),
             ),
             const SizedBox(height: 20),
             const Text(
-              'The home screen widget will update automatically every 30 minutes.',
+              'The home screen widget will refresh automatically every 5 minutes.',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.grey),
             ),
